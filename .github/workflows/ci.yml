@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Build web app
+        run: npm run build
+        env:
+          NEXT_PUBLIC_WS_URL: ws://127.0.0.1:1234
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+        env:
+          CI: true

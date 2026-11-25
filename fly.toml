@@ -1,0 +1,31 @@
+# WebSocket server for Tandem. The Next.js app deploys separately (Vercel).
+# From the repo root: fly deploy
+# Create a volume first: fly volumes create tandem_data --size 1
+
+app = "tandem-ws"
+primary_region = "iad"
+
+[build]
+  dockerfile = "deploy/Dockerfile"
+
+[env]
+  WS_HOST = "0.0.0.0"
+  WS_PORT = "1234"
+  DATABASE_PATH = "/data/tandem.sqlite"
+
+[http_service]
+  internal_port = 1234
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    path = "/health"
+    interval = "15s"
+    timeout = "2s"
+    method = "GET"
+
+[[mounts]]
+  source = "tandem_data"
+  destination = "/data"
