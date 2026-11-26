@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-provider";
 import { PresenceStack } from "@/components/workspace/presence";
 import { useRoom, type CursorPoint } from "@/components/workspace/room-provider";
 import { useDocSlice } from "@/components/workspace/use-doc";
+import { roomHref } from "@/lib/demo/static-demo";
 
 const TABS: Array<{ id: CursorPoint["surface"]; label: string }> = [
   { id: "pipeline", label: "Pipeline" },
@@ -44,7 +45,7 @@ export function Topbar({
   }, [undoManager]);
 
   const share = async () => {
-    const url = `${window.location.origin}/room/${roomId}`;
+    const url = `${window.location.origin}${roomHref(roomId, {}, true)}`;
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);

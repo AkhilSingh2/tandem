@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist } from "next/font/google";
+import { DemoNote } from "@/components/demo/demo-note";
 import { themeBootScript } from "@/lib/theme-script";
 import "./globals.css";
 
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
+        <DemoNote />
       </body>
     </html>
   );

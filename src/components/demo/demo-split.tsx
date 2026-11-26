@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Brand } from "@/components/brand";
 import { ThemeToggle } from "@/components/theme-provider";
 import { randomString } from "@/lib/ids";
+import { roomHref } from "@/lib/demo/static-demo";
 
 export function DemoSplit() {
   const [room] = useState(() => `demo-${randomString(8)}`);
@@ -20,7 +21,7 @@ export function DemoSplit() {
           Two live clients, one room. Nothing is replayed — each pane has its own cursor, name, and Yjs document.
         </p>
         <div className="flex items-center gap-2">
-          <a className="btn btn-ghost btn-tiny" href={`/room/${room}?name=Akhil&seed=1`}>
+          <a className="btn btn-ghost btn-tiny" href={roomHref(room, { name: "Akhil", seed: "1" }, true)}>
             Open single view
           </a>
           <ThemeToggle />
@@ -32,7 +33,7 @@ export function DemoSplit() {
             <figcaption className="px-3 py-1.5 text-xs tracking-wide text-faint uppercase">{pane.caption}</figcaption>
             <iframe
               title={`${pane.name}'s live Tandem client`}
-              src={`/room/${room}?name=${encodeURIComponent(pane.name)}&seed=${pane.seed}&embed=1`}
+              src={roomHref(room, { name: pane.name, seed: pane.seed, embed: "1" }, true)}
               className="min-h-0 w-full flex-1 border-0 bg-bg"
             />
           </figure>

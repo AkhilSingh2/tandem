@@ -8,6 +8,7 @@ import { Brand } from "@/components/brand";
 import { ThemeToggle } from "@/components/theme-provider";
 import { createRoomId } from "@/lib/ids";
 import { parseRoomInput } from "@/lib/room";
+import { roomHref } from "@/lib/demo/static-demo";
 
 const FEATURES = [
   {
@@ -34,7 +35,7 @@ export function HomeExperience() {
   const go = (roomId: string) => {
     const who = name.trim() || "Akhil";
     localStorage.setItem("tandem:name", who);
-    router.push(`/room/${roomId}?name=${encodeURIComponent(who)}`);
+    router.push(roomHref(roomId, { name: who }));
   };
 
   return (

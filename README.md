@@ -6,6 +6,8 @@ Tandem is a real-time job-hunt studio built by [Akhilendra Singh](https://github
 
 No accounts. No paid APIs. SQLite on your machine.
 
+**Live demo:** [akhilsingh2.github.io/tandem](https://akhilsingh2.github.io/tandem/) (try [the two-person demo](https://akhilsingh2.github.io/tandem/demo/)). The hosted copy runs in demo mode with sample data: there is no websocket server on GitHub Pages, so clients in the same browser sync the Yjs document and presence over a BroadcastChannel instead. Build it with `STATIC_DEMO=true` (see `src/lib/demo`).
+
 ![Tandem demo: two clients sharing one pipeline](docs/media/hero.gif)
 
 ## Features

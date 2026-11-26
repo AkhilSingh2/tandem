@@ -8,6 +8,7 @@ import { ensureRootTypes, seedRoom } from "@/lib/board";
 import { createId } from "@/lib/ids";
 import { colorForUser, type PresenceUser } from "@/lib/users";
 import { websocketUrl } from "@/lib/ws-url";
+import { STATIC_DEMO } from "@/lib/demo/static-demo";
 
 export type ConnectionStatus = "connecting" | "connected" | "disconnected";
 
@@ -88,11 +89,21 @@ export function RoomProvider({
       doc = new Y.Doc();
       ensureRootTypes(doc);
       const undoManager = new Y.UndoManager(doc, { captureTimeout: 500 });
-      provider = new providerMod.HocuspocusProvider({
-        url: websocketUrl(),
-        name: roomId,
-        document: doc,
-      });
+      if (STATIC_DEMO) {
+        // GitHub Pages build: no websocket server, so clients sync across tabs instead.
+        const { BroadcastProvider } = await import("@/lib/demo/broadcast-provider");
+        if (cancelled) {
+          doc.destroy();
+          return;
+        }
+        provider = new BroadcastProvider({ name: roomId, document: doc }) as unknown as HocuspocusProvider;
+      } else {
+        provider = new providerMod.HocuspocusProvider({
+          url: websocketUrl(),
+          name: roomId,
+          document: doc,
+        });
+      }
       indexeddb = new idbMod.IndexeddbPersistence(`tandem:${roomId}:${userId}`, doc);
       provider.on("status", onStatus);
       provider.on("synced", onSynced);

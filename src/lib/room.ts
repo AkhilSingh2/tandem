@@ -10,6 +10,8 @@ export function parseRoomInput(value: string): string | null {
   try {
     const url = new URL(trimmed);
     const parts = url.pathname.split("/").filter(Boolean);
+    const queryId = url.searchParams.get("id");
+    if (queryId && isRoomId(queryId)) return queryId;
     const roomIndex = parts.indexOf("room");
     const id = roomIndex >= 0 ? parts[roomIndex + 1] : "";
     return id && isRoomId(id) ? id : null;
